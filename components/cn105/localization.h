@@ -24,6 +24,9 @@ namespace esphome {
 
             // Select the appropriate conversion table based on mode
             const std::vector<std::pair<float, float>>& localTable = getActiveTable();
+            if (localTable.empty()) {
+                return c;
+            }
 
             auto it = std::upper_bound(
                 localTable.begin(),
@@ -34,13 +37,16 @@ namespace esphome {
                 }
             );
 
-            if (it == localTable.begin() || it == localTable.end()) {
-                return c;
+            float fahrenheitResult;
+            if (it == localTable.begin()) {
+                fahrenheitResult = localTable.front().first;
+            } else if (it == localTable.end()) {
+                fahrenheitResult = localTable.back().first;
+            } else {
+                auto prev = it;
+                --prev;
+                fahrenheitResult = std::abs(prev->second - c) < std::abs(it->second - c) ? prev->first : it->first;
             }
-
-            auto prev = it;
-            --prev;
-            float fahrenheitResult = std::abs(prev->second - c) < std::abs(it->second - c) ? prev->first : it->first;
 
             return (fahrenheitResult - 32.0f) / 1.8f;
         }
@@ -52,6 +58,9 @@ namespace esphome {
 
             // Select the appropriate conversion table based on mode
             const std::vector<std::pair<float, float>>& localTable = getActiveTable();
+            if (localTable.empty()) {
+                return c;
+            }
 
             float fahrenheitInput = (c * 1.8f) + 32.0f;
 
@@ -63,8 +72,12 @@ namespace esphome {
                 [](const std::pair<float, float>& a, const std::pair<float, float>& b) {
                     return a.first < b.first;
                 });
-            if (it == localTable.begin() || it == localTable.end()) {
-                return c;
+            
+            if (it == localTable.begin()) {
+                return localTable.front().second;
+            }
+            if (it == localTable.end()) {
+                return localTable.back().second;
             }
 
             auto prev = it;
