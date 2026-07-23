@@ -128,6 +128,7 @@ FAHRENHEIT_MODES = {
     "disabled": 0,
     "standard": 1,
     "alt": 2,
+    "msz_a24na": 3,
     "false": 0,
     "true": 1,
 }
