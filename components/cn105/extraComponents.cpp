@@ -267,6 +267,15 @@ void CN105Climate::set_use_fahrenheit_support_mode(FahrenheitMode mode) {
     ESP_LOGI(TAG, "Fahrenheit compatibility mode: %s", mode_name);
 }
 
+void CN105Climate::set_msz_a24na_setpoint_table(bool value) {
+    this->use_msz_a24na_setpoint_table_ = value;
+    if (value) {
+        this->traits_.set_visual_min_temperature(16.0f);
+        this->traits_.set_visual_max_temperature(31.0f);
+    }
+    ESP_LOGI(TAG, "MSZ-A24NA setpoint table: %s", value ? "enabled" : "disabled");
+}
+
 void CN105Climate::add_hardware_setting(HardwareSettingSelect* setting) {
     this->hardware_settings_.push_back(setting);
     setting->setCallbackFunction([this, setting](const std::string& value, int int_value) {
