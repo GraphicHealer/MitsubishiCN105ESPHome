@@ -82,7 +82,7 @@ Units tested by project contributors include:
 - `PEFY-P32VMA-E2`
 - `SEZ-KD25VAQ`
 - `SEZ-M50DAL`
-- `MSZ-A24NA`
+- `MSZ-A24NA` (See `msz_a24na_setpoint_table` and `fahrenheit_compatibility`)
 
 ## Usage
 
